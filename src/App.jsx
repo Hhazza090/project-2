@@ -114,7 +114,7 @@ export const App = () => {
                             <MovieCard.Body>
                                 <MovieCard.Description>
                                     <Typography sx={{maxWidth: '42vw', minWidth: '42vw'}}>
-                                        The SkillStorm Movies repository is currently empty. If you'd like to add a movie, please go to src/utils/movies.js and add a movie by following the data format specified.
+                                        Your DynamoDB table is currently empty! If you'd like to add a movie, ensure that your Lambdas and API Gateway have been properly configured and their respective endpoints have been added to the .env file. Once you've done that, use the form below to add any movies to your DynamoDB table!
                                     </Typography>
                                 </MovieCard.Description>
                             </MovieCard.Body>
