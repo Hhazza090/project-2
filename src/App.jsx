@@ -1,11 +1,20 @@
+import { useState, useEffect } from 'react';
 import { Grid, Typography } from '@mui/material';
 import Header, { Title, Body } from './components/Header';
 import { Movie as MovieCard } from './components/Cards';
 import { DecoratedList } from './components/Lists';
 import { Image } from './components/Image';
-import movies from './utils/movies';
+// import movies from './utils/movies.example';
+import axios from 'axios';
 
 export const App = () => {
+    const [movies, setMovies] = useState([]);
+
+    useEffect(() => {
+        axios.get(`${process.env.REACT_APP_GATEWAY_URI}/${process.env.REACT_APP_GATEWAY_RESOURCE}`)
+        .then(res => {console.log(res); setMovies(res.data.Items ?? [])} );
+    }, []);
+
     return (
         <>
             <Grid container justifyContent="center">
@@ -19,8 +28,8 @@ export const App = () => {
             </Grid>
             <Grid container justifyContent="center" spacing={2} sx={{padding: '5em 0'}}>
                 {
-                movies.length > 0 
-                ? movies.map((movie) => {
+                movies?.length > 0 
+                ? movies?.map((movie) => {
                     return (
                         <Grid item>
                             <MovieCard>
@@ -46,8 +55,10 @@ export const App = () => {
                                                 <MovieCard.Description>
                                                     <hr/>
                                                     <DecoratedList>
-                                                        <DecoratedList.Item><strong>{movie?.directors?.length > 1 ? 'Directors' : 'Director'}</strong></DecoratedList.Item>
-                                                        {movie?.directors?.map((director, index) => {
+                                                        <DecoratedList.Item><strong>{movie?.directors?.length > 1 || typeof movie.director != 'string' ? 'Directors' : 'Director'}</strong></DecoratedList.Item>
+                                                        {typeof movie.director == 'string' ? 
+                                                            <DecoratedList.Item>{movie.director}</DecoratedList.Item> : 
+                                                        movie?.directors?.map((director, index) => {
                                                             return (
                                                                 <DecoratedList.Item decorated={index !== 0}>{director}</DecoratedList.Item>
                                                             );
