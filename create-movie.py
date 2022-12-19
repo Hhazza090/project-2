@@ -4,61 +4,71 @@ import boto3
 TABLE_NAME = 'YOUR_TABLE_NAME_HERE' # TYPE YOUR TABLE NAME HERE
 
 def lambda_handler(event, context):
+def lambda_handler(event, context):
     db = boto3.client('dynamodb')
-    
+
+    body = json.loads(event['body'])
+
     db.put_item(
         TableName=TABLE_NAME,
         Item={
             "director": {
-                "S": event['director']
+                "S": body['director']
             },
             "title": {
-                "S": event['title']
+                "S": body['title']
             },
             "description": {
-                "S": event['description']
+                "S": body['description']
             },
             "contentRating": {
-                "S": event['contentRating']
+                "S": body['contentRating']
             },
             "releaseYear": {
-                "N": event['releaseYear']
+                "N": body['releaseYear']
             },
             "runTime": {
-                "S": event['runTime']
+                "S": body['runTime']
             },
             "writers": {
                 "L": [
                 {
-                    "S": event['writers'][0]
+                    "S": body['writers'][0]
                 },
                 {
-                    "S": event['writers'][1] if len(event['writers']) > 2 else '' 
+                    "S": body['writers'][1] if len(body['writers']) > 2 else '' 
                 },
                 {
-                    "S": event['writers'][2] if len(event['writers']) > 3 else ''
+                    "S": body['writers'][2] if len(body['writers']) > 3 else ''
                 }
                 ]
             },
             "actors": {
                 "L": [
                 {
-                    "S": event['actors'][0]
+                    "S": body['actors'][0]
                 },
                 {
-                    "S": event['actors'][1] if len(event['actors']) > 2 else ''
+                    "S": body['actors'][1] if len(body['actors']) > 2 else ''
                 },
                 {
-                    "S": event['actors'][2] if len(event['actors']) > 3 else ''
+                    "S": body['actors'][2] if len(body['actors']) > 3 else ''
                 }
                 ]
             },
             "imageURL": {
-                "S": event['imageURL']
+                "S": body['imageURL']
             }
     })
     return {
-        'statusCode': 201
+        'statusCode': 201,
+        'headers': {
+            'Access-Control-Allow-Credentials': True,
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': '*',
+            'Access-Control-Allow-Headers': '*',
+            'Content-Type': 'application/json'
+        }
     }
 
 
