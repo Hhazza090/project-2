@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Grid, Typography } from '@mui/material';
+import { Card, Grid, Typography } from '@mui/material';
 import Header, { Title, Body } from './components/Header';
 import { Movie as MovieCard } from './components/Cards';
 import { DecoratedList } from './components/Lists';
 import { Image } from './components/Image';
+import { CreateMovieForm } from './components/Form';
 // import movies from './utils/movies.example';
 import axios from 'axios';
 
@@ -22,8 +23,15 @@ export const App = () => {
                     {/* Please change the header title or body text to whatever you wish */}
                     <Header>
                         <Title>SkillStorm Movies</Title>
-                        <Body>Enter your text here.</Body>
+                        <Body>Movies delivered to you through the power of serverless computing!</Body>
                     </Header>
+                </Grid>
+            </Grid>
+            <Grid container justifyContent="center" sx={{margin: "30px 0px"}}>
+                <Grid item>
+                    <Card sx={{padding: '20px'}}>
+                        <CreateMovieForm setMovies={setMovies}/>
+                    </Card>
                 </Grid>
             </Grid>
             <Grid container justifyContent="center" spacing={2} sx={{padding: '5em 0'}}>
@@ -71,7 +79,7 @@ export const App = () => {
                                                         <DecoratedList.Item><strong>{movie?.writers?.length > 1 ? 'Writers' : 'Writer'}</strong></DecoratedList.Item>
                                                         {movie?.writers?.map((writer, index) => {
                                                             return (
-                                                                <DecoratedList.Item decorated={index !== 0}>{writer}</DecoratedList.Item>
+                                                                movie?.writers[index] ? <DecoratedList.Item decorated={index !== 0}>{writer}</DecoratedList.Item> : null
                                                             );
                                                         })}
                                                     </DecoratedList>
